@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import PyPDF2
+import sys
+
+def main(args):
+    assert len(args) > 0, 'Require at least one filename'
+    for filename in args:
+        content = ''
+        with open(filename, 'rb') as pdffile:
+            pdfReader = PyPDF2.PdfFileReader(pdffile)
+            for i in range(pdfReader.numPages):
+                pageObj = pdfReader.getPage(i)
+                content += pageObj.extractText() + '\n'
+        print(content)
+        with open(filename + '.txt', 'w') as outfile:
+            outfile.write(content)
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
